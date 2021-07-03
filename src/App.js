@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { getAccessToken } from "./spotify";
+import {
+  client_id,
+  client_secret,
+  getAccessToken,
+  redirect_uri,
+} from "./spotify";
 import Spotify from "spotify-web-api-js";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
@@ -34,7 +39,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/playlist/:id">
-            <div className="flex w-full">
+            <div className="flex w-full ">
               <Sidebar />
               <Main />
             </div>
