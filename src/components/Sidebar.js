@@ -81,15 +81,17 @@ function Sidebar() {
         </motion.div>
       </div>
 
-      {/* paylist */}
+      {/* liked songs */}
       <div className="px-3">
-        <div className="mt-5 py-3 border-b-2 border-gray-600  flex">
-          {/* icon */}
-          <div className="w-7 mr-3 h-7 flex items-center justify-center bg-gradient-to-tl from-blue-600 to-white">
-            <AiFillHeart className="text-white text-lg" />
+        <Link to="/collection/tracks">
+          <div className="mt-5 py-3 border-b-2 border-gray-600  flex">
+            {/* icon */}
+            <div className="w-7 mr-3 h-7 flex items-center justify-center bg-gradient-to-tl from-blue-600 to-white">
+              <AiFillHeart className="text-white text-lg" />
+            </div>
+            <p className="text-gray-400 ">Liked songs</p>
           </div>
-          <p className="text-gray-400 ">Liked songs</p>
-        </div>
+        </Link>
       </div>
 
       <div className="p-3">

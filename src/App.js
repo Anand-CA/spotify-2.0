@@ -12,10 +12,10 @@ import Spotify from "spotify-web-api-js";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Main from "./components/Main";
-import { set_user } from "./features/userSlice";
+import { set_instance, set_user } from "./features/userSlice";
 import { useDispatch } from "react-redux";
+import LikedSongs from "./pages/LikedSongs";
 var s = new Spotify();
-
 function App() {
   const [token, setToken] = useState(null);
   const dispatch = useDispatch();
@@ -27,6 +27,7 @@ function App() {
     if (_token) {
       setToken(_token);
       s.setAccessToken(_token);
+
       s.getMe().then((user) => {
         dispatch(set_user(user));
       });
@@ -38,6 +39,12 @@ function App() {
     <div className="app">
       <Router>
         <Switch>
+          <Route path="/collection/tracks">
+            <div className="flex">
+              <Sidebar />
+              <LikedSongs s={s} />
+            </div>
+          </Route>
           <Route path="/playlist/:id">
             <div className="flex w-full ">
               <Sidebar />
@@ -45,7 +52,14 @@ function App() {
             </div>
           </Route>
           <Route exact path="/">
-            {token ? <Sidebar /> : <Login />}
+            {token ? (
+              <div className="flex">
+                <Sidebar />
+                <Home s={s} />
+              </div>
+            ) : (
+              <Login />
+            )}
           </Route>
         </Switch>
       </Router>

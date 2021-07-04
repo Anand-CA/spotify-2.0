@@ -1,60 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Menu, Dropdown } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
-import Spotify from "spotify-web-api-js";
-import { BsFillPlayFill } from "react-icons/bs";
-import { BsThreeDots } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import { Header, Image, Label, Icon, Table } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
-import moment from "moment";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
-import { GrFormPrevious, GrFormNext, GrPrevious } from "react-icons/gr";
-import SkeletonImage from "antd/lib/skeleton/Image";
-import "./Main.css";
 import { motion } from "framer-motion";
 import { IoMdPerson } from "react-icons/io";
-import { IconContext } from "react-icons/lib";
-var s = new Spotify();
-
-function Main() {
-  const { id } = useParams();
-  const [image, setImage] = useState("");
-  const [name, setName] = useState("");
-  const [playlist, setPlaylist] = useState([]);
-  console.log("id", id);
-  const [show, setShow] = useState(false);
+import moment from "moment";
+import { BsFillPlayFill } from "react-icons/bs";
+import { BsThreeDots } from "react-icons/bs";
+import { AiFillPlayCircle } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { selectInstance } from "../features/userSlice";
+function LikedSongs({ s }) {
+  const [liked, setLiked] = useState([]);
+  console.log("instance 🚀 ", s);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    document.querySelector(".main").addEventListener("scroll", handleScroll);
-  }, []);
-  console.log(show);
-  useEffect(() => {
-    console.log("hello");
-    s.getPlaylist(id).then(
-      function (data) {
-        console.log("User playlistsss", data);
-        setImage(data.images[0].url);
-        setName(data.name);
-        setPlaylist(data.tracks.items);
-      },
-      function (err) {
-        console.error(err);
-      }
-    );
-    s.getMyCurrentPlayingTrack().then((res) => {
-      console.log(res);
+    s.getMySavedTracks((err, data) => {
+      console.log("liked ", data);
+      setLiked(data?.items);
     });
-  }, [id]);
 
-  const handleScroll = () => {
-    if (window.scrollY > 100) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
-  };
+    s.getMe().then((user) => {
+      console.log("user 🚀 ", user);
+      setUser(user);
+    });
+  }, []);
 
   function millisToMinutesAndSeconds(millis) {
     var minutes = Math.floor(millis / 60000);
@@ -62,13 +31,9 @@ function Main() {
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
   return (
-    <div
-      onScroll={handleScroll}
-      className="main flex-1 h-screen overflow-scroll  bg-spotify-black "
-    >
+    <div className="main flex-1 h-screen overflow-scroll  bg-spotify-black ">
       {/* header */}
       <div
-        style={{ backgroundColor: `${show && "black"}` }}
         className={`-mb-20  flex items-center py-2 sticky right-0 bg-transparent top-0 z-10 w-full`}
       >
         {/* icons */}
@@ -101,10 +66,23 @@ function Main() {
         </div>
       </div>
       {/* banner */}
-      <div className="h-96 w-full bg-gradient-to-b relative from-red-500 ">
-        <div className="flex absolute bottom-10 left-10">
-          <img className="h-32 w-32 mr-5 items-end" src={image} alt="" />
-          <h1 className="text-6xl font-sans text-white font-bold ">{name}</h1>
+      <div className="h-96 w-full bg-gradient-to-b relative from-indigo-600 ">
+        <div className="items-center flex absolute bottom-10 left-10">
+          <img
+            className="h-32 w-32 mr-5 items-end"
+            src="/images/liked.jpeg"
+            alt=""
+          />
+          <div className="flex flex-col justify-center text-white">
+            <p className="text-sm -mb-4 font-semibold">PLAYLIST</p>
+            <h1 className="text-6xl font-sans text-white font-bold ">
+              Liked songs
+            </h1>
+            <p className="text-sm font-semibold">
+              {user?.display_name}{" "}
+              <span className="text-gray-400 ml-3">{liked?.length} songs</span>{" "}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -134,7 +112,7 @@ function Main() {
           </thead>
 
           <tbody>
-            {playlist.map((p, index) => (
+            {liked?.map((l, index) => (
               <motion.tr
                 initial={{ scale: 0.6 }}
                 animate={{ scale: 1 }}
@@ -146,18 +124,18 @@ function Main() {
                   <div className="flex">
                     <img
                       className="h-14 mr-4"
-                      src={p.track.album.images[0].url}
+                      src={l.track.album.images[0].url}
                       alt=""
                     />
                     <div className="flex justify-center flex-col">
-                      <p className="mb-1">{p.track.name}</p>
-                      <p className="text-gray-400">{p.track.artists[0].name}</p>
+                      <p className="mb-1">{l.track.name}</p>
+                      <p className="text-gray-400">{l.track.artists[0].name}</p>
                     </div>
                   </div>
                 </td>
-                <td className="sm:block hidden">{p.track.album.name}</td>
-                <td className="">{moment().startOf(p.added_at).fromNow()}</td>
-                <td>{millisToMinutesAndSeconds(p.track.duration_ms)}</td>
+                <td className="sm:block hidden">{l.track.album.name}</td>
+                <td className="">{moment().startOf(l.added_at).fromNow()}</td>
+                <td>{millisToMinutesAndSeconds(l.track.duration_ms)}</td>
               </motion.tr>
             ))}
           </tbody>
@@ -167,4 +145,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default LikedSongs;
