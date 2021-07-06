@@ -5,8 +5,9 @@ import { BsSearch } from "react-icons/bs";
 import "antd/dist/antd.css";
 import { Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { s } from "../instance";
 
-function Search({ s }) {
+function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState({});
   useEffect(() => {
@@ -14,7 +15,6 @@ function Search({ s }) {
       searchTerm,
       ["album", "artist", "playlist", "track"],
       (err, data) => {
-        console.log("🏵 ", data);
         setResult(data);
       }
     );
@@ -41,7 +41,7 @@ function Search({ s }) {
   return (
     <div className="bg-spotify-black flex-1 h-screen overflow-y-scroll">
       {/* header */}
-      <div className="p-2  flex items-center">
+      <div className="p-2 sticky top-0 bg-spotify-black flex items-center">
         {/* nav arrow */}
         <div className="flex">
           <MdNavigateBefore
@@ -83,7 +83,9 @@ function Search({ s }) {
       </div>
 
       <h1
-        className={`font-5xl ${searchTerm && "hidden"} text-white font-bold p-3`}
+        className={`font-5xl ${
+          searchTerm && "hidden"
+        } text-white font-bold p-3`}
       >
         Search for Tracks, Artists, Albums ...
       </h1>
@@ -97,7 +99,10 @@ function Search({ s }) {
           <h1 className="text-4xl font-sans text-white font-bold ">Songs</h1>
           <div>
             {result?.tracks?.items?.map((song) => (
-              <div className="flex justify-between p-3">
+              <div
+                onClick={() => s.play({ uris: [`spotify:track:${song?.id}`] })}
+                className="flex justify-between p-3"
+              >
                 <div className="flex">
                   <img
                     className="h-14 mr-4"

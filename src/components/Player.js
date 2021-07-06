@@ -19,18 +19,17 @@ import {
   setPlaying,
 } from "../features/songSlice";
 import { s } from "../instance";
+import Slider from "./Slider";
 
 function Player({ token }) {
   const dispatch = useDispatch();
-  const playing = useSelector(selectPlaying);
+  const currentPlayTrack = useSelector(selectCurrentPlayTrack);
   const [track, setTrack] = useState({});
   const handlePlay = () => {
-    if (playing) {
-      s.pause();
-      dispatch(setPlaying(false));
-    } else {
+    if (currentPlayTrack.paused) {
       s.play();
-      dispatch(setPlaying(true));
+    } else {
+      s.pause();
     }
   };
 
@@ -63,6 +62,14 @@ function Player({ token }) {
         // console.log(state);
         const currentTrack = state.track_window.current_track;
         console.log("current 999", currentTrack);
+        console.log("state 999", state);
+        dispatch(
+          setCurrentTrack({
+            duration: state.duration,
+            position: state.position,
+            paused: state.paused,
+          })
+        );
         setTrack(currentTrack);
 
         // if (this.state.playerState === null || this.state.playerState.track !== playerState.track || player) {}
@@ -73,13 +80,10 @@ function Player({ token }) {
         // console.log('Ready with Device ID', device_id);
 
         s.transferMyPlayback([device_id], {
-          play: playing,
+          play: false,
         })
           .then((res) => {
             console.log(res);
-            this.setState({
-              disabled: false,
-            });
           })
           .catch((err) => {
             console.log(err);
@@ -95,10 +99,9 @@ function Player({ token }) {
       player.connect();
     };
   }, []);
-  console.log(playing);
 
   return (
-    <div className="bg-spotify-black justify-between items-center flex h-32 text-white fixed left-0 right-0 bottom-0">
+    <div className="bg-spotify-black justify-between items-center flex p-5 text-white fixed left-0 right-0 bottom-0">
       <div className="flex space-x-2 items-center">
         <div>
           <img className="h-20" src={track?.album?.images[0]?.url} alt="" />
@@ -115,20 +118,26 @@ function Player({ token }) {
         <AiFillHeart className="text-spotify-green text-2xl" />
       </div>
 
-      <div className="flex space-x-5">
-        <button onClick={() => s.skipToPrevious()}>
-          <MdSkipPrevious className="text-4xl text-gray-400" />
-        </button>
-        <button onClick={handlePlay}>
-          {playing ? (
-            <AiFillPauseCircle className="text-5xl text-white" />
-          ) : (
-            <AiFillPlayCircle className="text-5xl text-white" />
-          )}
-        </button>
-        <button onClick={() => s.skipToNext()}>
-          <MdSkipNext className="text-4xl text-gray-400" />
-        </button>
+      <div className="flex flex-col items-center space-y-1">
+        <div className="item-center flex space-x-4">
+          <button onClick={() => s.skipToPrevious()}>
+            <MdSkipPrevious className="text-4xl text-gray-400" />
+          </button>
+          <button onClick={handlePlay}>
+            {!currentPlayTrack.paused ? (
+              <AiFillPauseCircle className="text-5xl text-white" />
+            ) : (
+              <AiFillPlayCircle className="text-5xl text-white" />
+            )}
+          </button>
+          <button onClick={() => s.skipToNext()}>
+            <MdSkipNext className="text-4xl text-gray-400" />
+          </button>
+        </div>
+
+        <div>
+          <Slider />
+        </div>
       </div>
 
       {/* right */}

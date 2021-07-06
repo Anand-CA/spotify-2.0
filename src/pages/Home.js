@@ -1,43 +1,45 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Main from "./Main";
-import Sidebar from "../components/Sidebar";
+import React, { useEffect, useRef, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
-import { BsThreeDots } from "react-icons/bs";
-import {
-  AnimatePresence,
-  domAnimation,
-  LazyMotion,
-  motion,
-} from "framer-motion";
+import { domAnimation, LazyMotion, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import { s } from "../instance";
 
 function Home() {
   const [newReleases, setNewReleases] = useState([]);
+  const ref = useRef(null);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     s.getNewReleases((err, data) => {
       setNewReleases(data.albums.items);
     });
-    s.getAudioFeaturesForTrack("63aj87TQG6F3RVO5nbG2VQ", (err, data) => {
-      console.log("audio", data);
-    });
   }, []);
-  console.log("new releases 🚀 ", newReleases);
+
+  const handleScroll = () => {
+    if (ref.current.scrollTop > 240) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  };
   return (
-    <div className="px-2 overflow-scroll text-white bg-spotify-black flex-1 h-screen">
+    <div
+      ref={ref}
+      onScroll={handleScroll}
+      className={`px-2 ${
+        show ? "bg-spotify-black" : "transparent"
+      } overflow-scroll  text-white bg-spotify-black flex-1 h-screen`}
+    >
       <Header />
       <h1 className="text-white">New Releases</h1>
 
       {/*  */}
       <div className="grid lg:grid-cols-4  grid-cols-4">
         <LazyMotion features={domAnimation}>
-          {newReleases?.map((n) => (
-            <Link to={`/album/${n.id}`}>
+          {newReleases?.map((n, index) => (
+            <Link key={index} to={`/album/${n.id}`}>
               <motion.div
-                key={n.id}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="group duration-300 transition-all p-4 hover:bg-transparent-rgba"
@@ -52,7 +54,7 @@ function Home() {
                   </motion.div>
                 </div>
 
-                <p>{n.name}</p>
+                <p className="text-white line-clamp-2">{n.name}</p>
                 <p className="text-gray-400">{n.artists[0].name}</p>
               </motion.div>
             </Link>

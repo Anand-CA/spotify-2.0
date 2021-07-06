@@ -5,24 +5,14 @@ import { IoMdPerson } from "react-icons/io";
 import moment from "moment";
 import { BsFillPlayFill } from "react-icons/bs";
 import { BsThreeDots } from "react-icons/bs";
-import { AiFillPlayCircle } from "react-icons/ai";
-import { useSelector } from "react-redux";
-import { selectInstance } from "../features/userSlice";
 import { s } from "../instance";
 function LikedSongs() {
   const [liked, setLiked] = useState([]);
-  console.log("instance 🚀 ", s);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     s.getMySavedTracks((err, data) => {
-      console.log("liked ", data);
       setLiked(data?.items);
-    });
-
-    s.getMe().then((user) => {
-      console.log("user 🚀 ", user);
-      setUser(user);
     });
   }, []);
 

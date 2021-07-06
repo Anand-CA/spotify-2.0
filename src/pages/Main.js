@@ -6,8 +6,6 @@ import "semantic-ui-css/semantic.min.css";
 import moment from "moment";
 import "./Main.css";
 import { motion } from "framer-motion";
-import { IoMdPerson } from "react-icons/io";
-import { IconContext } from "react-icons/lib";
 import Header from "../components/Header";
 import { setPlaying } from "../features/songSlice";
 import { useDispatch } from "react-redux";
@@ -16,6 +14,7 @@ import { s } from "../instance";
 function Main() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const [playlistId, setPlaylistId] = useState("");
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [playlist, setPlaylist] = useState([]);
@@ -25,7 +24,7 @@ function Main() {
   useEffect(() => {
     s.getPlaylist(id).then(
       function (data) {
-        console.log("User playlistsss", data);
+        setPlaylistId(data?.id);
         setImage(data?.images[0]?.url);
         setName(data?.name);
         setPlaylist(data?.tracks?.items);
@@ -35,7 +34,7 @@ function Main() {
       }
     );
   }, [id]);
-
+  console.log(playlistId);
   const handleScroll = () => {
     if (Ref.current.scrollTop > 240) {
       setShow(true);
@@ -49,10 +48,8 @@ function Main() {
     var seconds = ((millis % 60000) / 1000).toFixed(0);
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
-  console.log(show);
 
   const playTrack = (id) => {
-    console.log(id);
     s.play({
       uris: [`spotify:track:${id}`],
     });
@@ -81,6 +78,9 @@ function Main() {
       {/* play button */}
       <div className="flex items-center pl-6 ">
         <motion.div
+          onClick={() =>
+            s.play({ context_uri: `spotify:playlist:${playlistId}` })
+          }
           className="mr-5 flex justify-center rounded-full  bg-spotify-green w-20 h-20 items-center"
           whileTap={{ scale: 0.9 }}
         >
@@ -106,6 +106,7 @@ function Main() {
           <tbody>
             {playlist.map((p, index) => (
               <motion.tr
+                key={index}
                 onClick={() => playTrack(p.track.id)}
                 initial={{ scale: 0.6 }}
                 animate={{ scale: 1 }}

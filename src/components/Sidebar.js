@@ -15,16 +15,8 @@ var s = new Spotify();
 function Sidebar() {
   const [playlists, setPlaylist] = useState([]);
   useEffect(() => {
-    s.getMe()
-      .then((user) => {
-        console.log("user ", user);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     s.getUserPlaylists().then(
       function (data) {
-        console.log("User playlists", data);
         setPlaylist(data.items);
       },
       function (err) {
@@ -36,7 +28,7 @@ function Sidebar() {
     <div className="hidden sm:block bg-black h-screen w-56 font-sans font-semibold">
       {/* logo */}
       <div className="p-3">
-        <NavLink to="/" activeClassName="active">
+        <Link to="/">
           <motion.img
             initial={{ y: -15 }}
             animate={{ y: 1 }}
@@ -45,12 +37,12 @@ function Sidebar() {
             src="/images/Spotify_Logo_RGB_White.svg"
             alt=""
           />
-        </NavLink>
+        </Link>
       </div>
 
       {/* menu */}
       <div className="">
-        <Link to="/" activeClassName="text-white">
+        <Link to="/">
           <motion.div
             initial={{ y: 15 }}
             animate={{ y: 1 }}
@@ -108,7 +100,7 @@ function Sidebar() {
 
       <div className="p-3">
         {playlists.map((playlist) => (
-          <div className="py-2">
+          <div key={playlist?.id} className="py-2">
             <Link to={`/playlist/${playlist.id}`}>
               <p className="text-gray-400">{playlist.name}</p>
             </Link>

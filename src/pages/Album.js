@@ -1,35 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Menu, Dropdown } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 import { useHistory, useParams } from "react-router-dom";
-import Spotify from "spotify-web-api-js";
 import { BsFillPlayFill } from "react-icons/bs";
-import { BsThreeDots, BsFillVolumeUpFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import "semantic-ui-css/semantic.min.css";
-import moment from "moment";
-import { AiOutlineHeart } from "react-icons/ai";
-import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
-import { GrFormPrevious, GrFormNext, GrPrevious } from "react-icons/gr";
-import SkeletonImage from "antd/lib/skeleton/Image";
-import { motion, useElementScroll, useViewportScroll } from "framer-motion";
-import {
-  BiSkipPrevious,
-  BiSkipNext,
-  BiRepeat,
-  BiShuffle,
-  BiPlay,
-} from "react-icons/bi";
-import { IoMdPerson } from "react-icons/io";
-import { IconContext } from "react-icons/lib";
-import { CgMiniPlayer } from "react-icons/cg";
-import { MdQueueMusic, MdDevicesOther } from "react-icons/md";
-import Player from "../components/Player";
+import { BsThreeDots } from "react-icons/bs";
+import { motion } from "framer-motion";
 import Header from "../components/Header";
 import { s } from "../instance";
 
 function Album() {
-  const history = useHistory();
   const { id } = useParams();
   const scroll = useRef(null);
   const ref = useRef(null);
@@ -54,13 +31,12 @@ function Album() {
       setShow(false);
     }
   };
-
+  console.log("album", album);
   function millisToMinutesAndSeconds(millis) {
     var minutes = Math.floor(millis / 60000);
     var seconds = ((millis % 60000) / 1000).toFixed(0);
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
-  console.log("single album", album);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -84,6 +60,7 @@ function Album() {
       {/* play button */}
       <div className="flex items-center pl-6 ">
         <motion.div
+          onClick={() => s.play({ context_uri: `spotify:album:${album?.id}` })}
           className="mr-5 flex justify-center rounded-full  bg-spotify-green w-20 h-20 items-center"
           whileTap={{ scale: 0.9 }}
         >
@@ -108,6 +85,7 @@ function Album() {
           <tbody>
             {albumTracks?.map((a, index) => (
               <motion.tr
+                onClick={() => s.play({ uris: [`spotify:track:${a.id}`] })}
                 initial={{ scale: 0.6 }}
                 animate={{ scale: 1 }}
                 transition={{ ease: "easeInOut", duration: 0.1 }}

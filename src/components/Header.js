@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useEffect } from "react";
+import React from "react";
 import { IoMdPerson } from "react-icons/io";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { useSelector } from "react-redux";
@@ -9,7 +9,6 @@ import { selectUser } from "../features/userSlice";
 function Header({ show }) {
   const history = useHistory();
   const user = useSelector(selectUser);
-  console.log('👨 ',user);
   return (
     <div
       className={`transition-all duration-300 flex items-center py-2 sticky right-0 ${
