@@ -8,7 +8,8 @@ import { BsThreeDots } from "react-icons/bs";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { selectInstance } from "../features/userSlice";
-function LikedSongs({ s }) {
+import { s } from "../instance";
+function LikedSongs() {
   const [liked, setLiked] = useState([]);
   console.log("instance 🚀 ", s);
   const [user, setUser] = useState(null);
@@ -74,7 +75,7 @@ function LikedSongs({ s }) {
             alt=""
           />
           <div className="flex flex-col justify-center text-white">
-            <p className="text-sm -mb-4 font-semibold">PLAYLIST</p>
+            <p className="text-sm font-semibold">PLAYLIST</p>
             <h1 className="text-6xl font-sans text-white font-bold ">
               Liked songs
             </h1>

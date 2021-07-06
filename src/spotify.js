@@ -2,13 +2,22 @@ export const client_secret = "718ede135a544ad781004897bf6d0e64";
 export const client_id = "3379b41787bf4903b57dbbf703f48016";
 export const redirect_uri = "http://localhost:3000";
 const scopes = [
-  "user-read-currently-playing",
-  "user-read-recently-played",
-  "user-read-playback-state",
+  "streaming",
+  "playlist-modify-public",
+  "playlist-modify-private",
+  "playlist-read-private",
+  "playlist-read-collaborative",
+  "user-library-modify",
   "user-library-read",
   "user-top-read",
-  "playlist-read-private",
+  "user-read-playback-position",
+  "user-read-playback-state",
+  "user-read-email",
+  "user-read-private",
+  "user-read-currently-playing",
   "user-modify-playback-state",
+  "user-follow-modify",
+  "user-follow-read",
 ];
 export const getAccessToken = () => {
   return window.location.hash

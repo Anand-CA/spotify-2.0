@@ -11,7 +11,7 @@ function Login() {
       />
       <a
         href={login_url}
-        className="bg-spotify-green focus:ring-4 ring-green-400 py-4 px-10 font-semibold rounded-full text-white"
+        className="no-underline hover:text-white bg-spotify-green focus:ring-4 ring-green-400 py-4 px-10 font-semibold rounded-full text-white"
       >
         Login
       </a>

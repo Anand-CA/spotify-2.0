@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { VscLibrary } from "react-icons/vsc";
-import { AiOutlineSearch, AiFillHeart, AiOutlineHome } from "react-icons/ai";
+import {
+  AiOutlineSearch,
+  AiFillHeart,
+  AiOutlineHome,
+  AiFillHome,
+} from "react-icons/ai";
 import Spotify from "spotify-web-api-js";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import "../css/global.css";
 
 var s = new Spotify();
 function Sidebar() {
@@ -30,7 +36,7 @@ function Sidebar() {
     <div className="hidden sm:block bg-black h-screen w-56 font-sans font-semibold">
       {/* logo */}
       <div className="p-3">
-        <Link to="/">
+        <NavLink to="/" activeClassName="active">
           <motion.img
             initial={{ y: -15 }}
             animate={{ y: 1 }}
@@ -39,46 +45,52 @@ function Sidebar() {
             src="/images/Spotify_Logo_RGB_White.svg"
             alt=""
           />
-        </Link>
+        </NavLink>
       </div>
 
       {/* menu */}
       <div className="">
-        <motion.div
-          initial={{ y: 15 }}
-          animate={{ y: 1 }}
-          transition={{ duration: 0.5 }}
-          className=" group duration-300	 flex transition-all hover:bg-spotify-black py-3 px-3 items-center cursor-pointer"
-        >
-          <AiOutlineHome className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
-          <p className="transition-all group-hover:text-white text-gray-400">
-            Home
-          </p>
-        </motion.div>
+        <Link to="/" activeClassName="text-white">
+          <motion.div
+            initial={{ y: 15 }}
+            animate={{ y: 1 }}
+            transition={{ duration: 0.5 }}
+            className=" group duration-300	 flex transition-all py-3 px-3 items-center cursor-pointer"
+          >
+            <AiOutlineHome className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
+            <p className="transition-all group-hover:text-white text-gray-400">
+              Home
+            </p>
+          </motion.div>
+        </Link>
 
-        <motion.div
-          initial={{ y: 15 }}
-          animate={{ y: 1 }}
-          transition={{ duration: 0.5 }}
-          className="group duration-300 cursor-pointer transition-all hover:bg-spotify-black py-3 px-3 flex items-center"
-        >
-          <AiOutlineSearch className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
-          <p className="transition-all group-hover:text-white text-gray-400">
-            Search
-          </p>
-        </motion.div>
+        <Link to="/search">
+          <motion.div
+            initial={{ y: 15 }}
+            animate={{ y: 1 }}
+            transition={{ duration: 0.5 }}
+            className="group duration-300 cursor-pointer transition-all  py-3 px-3 flex items-center"
+          >
+            <AiOutlineSearch className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
+            <p className="transition-all group-hover:text-white text-gray-400">
+              Search
+            </p>
+          </motion.div>
+        </Link>
 
-        <motion.div
-          initial={{ y: 15 }}
-          animate={{ y: 1 }}
-          transition={{ duration: 0.5 }}
-          className="duration-300 cursor-pointer group flex transition-all hover:bg-spotify-black py-3 px-3 items-center"
-        >
-          <VscLibrary className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
-          <p className="transition-all group-hover:text-white text-gray-400">
-            library
-          </p>
-        </motion.div>
+        <Link to="/collection/playlist">
+          <motion.div
+            initial={{ y: 15 }}
+            animate={{ y: 1 }}
+            transition={{ duration: 0.5 }}
+            className="duration-300 cursor-pointer group flex transition-all py-3 px-3 items-center"
+          >
+            <VscLibrary className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
+            <p className="transition-all group-hover:text-white text-gray-400">
+              library
+            </p>
+          </motion.div>
+        </Link>
       </div>
 
       {/* liked songs */}
