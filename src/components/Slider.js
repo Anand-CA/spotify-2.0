@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import { s } from "../instance";
 import { selectCurrentPlayTrack } from "../features/songSlice";
 import { useSelector } from "react-redux";
 
-const useStyles = makeStyles({
-  root: {
-    width: 325,
-  },
-});
-
 const Seeker = () => {
-  const classes = useStyles();
   const currentPlayTrack = useSelector(selectCurrentPlayTrack);
   const [value, setValue] = useState(0);
 
@@ -36,7 +28,7 @@ const Seeker = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className="w-full px-2">
       <Slider
         style={{ color: "#1DB954" }}
         value={value}

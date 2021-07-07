@@ -22,7 +22,7 @@ function LikedSongs() {
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
   return (
-    <div className="main flex-1 h-screen overflow-scroll  bg-spotify-black ">
+    <div className="pb-32 main flex-1 h-screen overflow-scroll  bg-spotify-black ">
       {/* header */}
       <div
         className={`-mb-20  flex items-center py-2 sticky right-0 bg-transparent top-0 z-10 w-full`}
@@ -66,9 +66,14 @@ function LikedSongs() {
           />
           <div className="flex flex-col justify-center text-white">
             <p className="text-sm font-semibold">PLAYLIST</p>
-            <h1 className="text-6xl font-sans text-white font-bold ">
+            <motion.h1
+              initial={{ y: 20 }}
+              animate={{ y: -3 }}
+              transition={{ ease: "easeInOut", duration: 0.7 }}
+              className="text-6xl font-sans text-white font-bold "
+            >
               Liked songs
-            </h1>
+            </motion.h1>
             <p className="text-sm font-semibold">
               {user?.display_name}{" "}
               <span className="text-gray-400 ml-3">{liked?.length} songs</span>{" "}
@@ -105,10 +110,14 @@ function LikedSongs() {
           <tbody>
             {liked?.map((l, index) => (
               <motion.tr
+                onClick={() =>
+                  s.play({ uris: [`spotify:track:${l.track.id}`] })
+                }
+                whileTap={{ scale: 0.9 }}
                 initial={{ scale: 0.6 }}
                 animate={{ scale: 1 }}
                 transition={{ ease: "easeInOut", duration: 0.1 }}
-                className="transition-all duration-200 hover:bg-transparent-rgba"
+                className="cursor-pointer transition-all duration-200 hover:bg-transparent-rgba"
               >
                 <td>{index + 1}</td>
                 <td>

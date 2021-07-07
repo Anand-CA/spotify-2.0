@@ -9,7 +9,6 @@ import {
 import Spotify from "spotify-web-api-js";
 import { Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import "../css/global.css";
 
 var s = new Spotify();
 function Sidebar() {
@@ -25,7 +24,7 @@ function Sidebar() {
     );
   }, []);
   return (
-    <div className="hidden sm:block bg-black h-screen w-56 font-sans font-semibold">
+    <div className="container1 hidden sm:block bg-black h-screen w-56 font-sans font-semibold">
       {/* logo */}
       <div className="p-3">
         <Link to="/">
@@ -42,47 +41,46 @@ function Sidebar() {
 
       {/* menu */}
       <div className="">
-        <Link to="/">
+        <NavLink
+          exact
+          className="text-gray-400 hover:text-white"
+          activeClassName="text-spotify-green bg-spotify-black"
+          to="/"
+        >
           <motion.div
             initial={{ y: 15 }}
             animate={{ y: 1 }}
-            transition={{ duration: 0.5 }}
-            className=" group duration-300	 flex transition-all py-3 px-3 items-center cursor-pointer"
+            className=" flex  py-3 px-3 items-center cursor-pointer"
           >
-            <AiOutlineHome className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
-            <p className="transition-all group-hover:text-white text-gray-400">
-              Home
-            </p>
+            <AiOutlineHome className=" mr-3  text-3xl" />
+            <p className="">Home</p>
           </motion.div>
-        </Link>
+        </NavLink>
 
-        <Link to="/search">
+        <NavLink
+          exact
+          className="text-gray-400 hover:text-white"
+          activeClassName="text-spotify-green "
+          to="/search"
+        >
           <motion.div
             initial={{ y: 15 }}
             animate={{ y: 1 }}
-            transition={{ duration: 0.5 }}
-            className="group duration-300 cursor-pointer transition-all  py-3 px-3 flex items-center"
+            className=" cursor-pointer  py-3 px-3 flex items-center"
           >
-            <AiOutlineSearch className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
-            <p className="transition-all group-hover:text-white text-gray-400">
-              Search
-            </p>
+            <AiOutlineSearch className=" mr-3  text-3xl" />
+            <p className="">Search</p>
           </motion.div>
-        </Link>
+        </NavLink>
 
-        <Link to="/collection/playlist">
-          <motion.div
-            initial={{ y: 15 }}
-            animate={{ y: 1 }}
-            transition={{ duration: 0.5 }}
-            className="duration-300 cursor-pointer group flex transition-all py-3 px-3 items-center"
-          >
-            <VscLibrary className="transition-all mr-3 group-hover:text-white text-gray-400 text-3xl" />
-            <p className="transition-all group-hover:text-white text-gray-400">
-              library
-            </p>
-          </motion.div>
-        </Link>
+        <motion.div
+          initial={{ y: 15 }}
+          animate={{ y: 1 }}
+          className=" cursor-pointer  flex  py-3 px-3 items-center"
+        >
+          <VscLibrary className="text-gray-400 mr-3   text-3xl" />
+          <p className="text-gray-400">Library</p>
+        </motion.div>
       </div>
 
       {/* liked songs */}

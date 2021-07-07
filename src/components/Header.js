@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { IoMdPerson } from "react-icons/io";
+import { IoMdArrowDropdown, IoMdPerson } from "react-icons/io";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { IoPersonCircleOutline } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
 import { selectUser } from "../features/userSlice";
+import { Dropdown } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 
 function Header({ show }) {
   const history = useHistory();
@@ -16,7 +19,7 @@ function Header({ show }) {
       } top-0 z-10 w-full`}
     >
       {/* icons */}
-      <div className="flex flex-1">
+      <div className={`flex ${!show && "flex-1"}`}>
         <MdNavigateBefore
           onClick={() => history.goBack()}
           className="m-2 text-white rounded-full bg-transparent-rgba text-4xl"
@@ -27,27 +30,28 @@ function Header({ show }) {
         />
       </div>
 
-      <div className="flex">
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="mr-3 bg-transparent-rgba py-2 px-7 border border-gray-200 rounded-full "
-        >
-          <p className="text-gray-200 ">UPGRADE</p>
-        </motion.button>
+      <motion.div
+        className={`animate-fade-in-down duration-300 ${
+          show ? "block" : "hidden"
+        }  flex-1 ml-2`}
+      >
+        <img
+          className="h-6 sm:h-10"
+          src="https://cdn.worldvectorlogo.com/logos/spotify-2.svg"
+          alt=""
+        />
+      </motion.div>
 
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="bg-transparent-rgba items-center space-x-2 flex py-2 px-7 border border-gray-200 rounded-full "
-        >
-          <IoMdPerson className="text-3xl text-white bg-gray-800  rounded-full" />
-          <p className="text-gray-200 ">{user?.display_name}</p>
-        </motion.button>
+      <div className="flex text-white">
+        <div className="flex space-x-1 items-center">
+          <div>
+            <IoPersonCircleOutline className="text-3xl" />
+          </div>
+          <p className="mt-3 font-semibold">{user?.display_name}</p>
+          <div>
+            <IoMdArrowDropdown className="text-3xl" />
+          </div>
+        </div>
       </div>
     </div>
   );

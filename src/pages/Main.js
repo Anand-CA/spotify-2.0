@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import { setPlaying } from "../features/songSlice";
 import { useDispatch } from "react-redux";
 import { s } from "../instance";
+import { AiFillPlayCircle } from "react-icons/ai";
 
 function Main() {
   const [loading, setLoading] = useState(true);
@@ -22,7 +23,7 @@ function Main() {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
-    s.getPlaylist(id).then(
+    const unsubscribe = s.getPlaylist(id).then(
       function (data) {
         setPlaylistId(data?.id);
         setImage(data?.images[0]?.url);
@@ -33,6 +34,8 @@ function Main() {
         console.error(err);
       }
     );
+
+    return unsubscribe;
   }, [id]);
   console.log(playlistId);
   const handleScroll = () => {
@@ -59,7 +62,7 @@ function Main() {
     <div
       ref={Ref}
       onScroll={handleScroll}
-      className={`main flex-1 h-screen overflow-scroll  bg-spotify-black `}
+      className={`main pb-32 flex-1 h-screen overflow-scroll  bg-spotify-black `}
     >
       {/* header */}
       <Header show={show} />
@@ -71,21 +74,28 @@ function Main() {
             src={loading ? "/images/dummy-1.png" : image}
             alt=""
           />
-          <h1 className="text-6xl font-sans text-white font-bold ">{name}</h1>
+          <motion.h1
+            initial={{ y: 20 }}
+            animate={{ y: -3 }}
+            transition={{ ease: "easeInOut", duration: 0.7 }}
+            className="text-6xl font-sans  text-white font-bold "
+          >
+            {name}
+          </motion.h1>
         </div>
       </div>
 
       {/* play button */}
       <div className="flex items-center pl-6 ">
-        <motion.div
+        <motion.button
           onClick={() =>
             s.play({ context_uri: `spotify:playlist:${playlistId}` })
           }
-          className="mr-5 flex justify-center rounded-full  bg-spotify-green w-20 h-20 items-center"
+          className=""
           whileTap={{ scale: 0.9 }}
         >
-          <BsFillPlayFill className="text-white text-5xl " />
-        </motion.div>
+          <AiFillPlayCircle className=" text-spotify-green text-8xl " />
+        </motion.button>
 
         <BsThreeDots className="hover:text-white text-gray-500 text-5xl" />
       </div>
@@ -110,8 +120,9 @@ function Main() {
                 onClick={() => playTrack(p.track.id)}
                 initial={{ scale: 0.6 }}
                 animate={{ scale: 1 }}
+                whileTap={{ scale: 0.9 }}
                 transition={{ ease: "easeInOut", duration: 0.1 }}
-                className="transition-all duration-200 hover:bg-transparent-rgba"
+                className="cursor-pointer transition-all duration-200 hover:bg-transparent-rgba"
               >
                 <td>{index + 1}</td>
                 <td>

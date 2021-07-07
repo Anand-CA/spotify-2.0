@@ -3,14 +3,13 @@
 @tailwind utilities;
 body {
   margin: 0;
-  font-family: "arial", sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: "Inter", sans-serif;
 }
 body::-webkit-scrollbar {
   display: none;

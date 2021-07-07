@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   currentPlayTrack: {},
   playing: false,
+  searchTerm: "",
 };
 
 export const songSlice = createSlice({
@@ -15,12 +16,16 @@ export const songSlice = createSlice({
     setPlaying: (state, action) => {
       state.playing = action.payload;
     },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
   },
 });
 
-export const { setCurrentTrack, setPlaying } = songSlice.actions;
+export const { setCurrentTrack, setPlaying, setSearchTerm } = songSlice.actions;
 
 export const selectCurrentPlayTrack = (state) => state.song.currentPlayTrack;
 export const selectPlaying = (state) => state.song.playing;
+export const selectSearchTerm = (state) => state.song.searchTerm;
 
 export default songSlice.reducer;

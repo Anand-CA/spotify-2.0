@@ -45,7 +45,7 @@ function Album() {
       ref={ref}
       onScroll={handleScroll}
       style={{ height: "100vh" }}
-      className="main relative flex-1  overflow-scroll  bg-spotify-black "
+      className="pb-32 main relative flex-1  overflow-scroll  bg-spotify-black "
     >
       {/* header */}
       <Header show={show} />
@@ -88,8 +88,9 @@ function Album() {
                 onClick={() => s.play({ uris: [`spotify:track:${a.id}`] })}
                 initial={{ scale: 0.6 }}
                 animate={{ scale: 1 }}
+                whileTap={{ scale: 0.9 }}
                 transition={{ ease: "easeInOut", duration: 0.1 }}
-                className="transition-all duration-200 hover:bg-transparent-rgba"
+                className="cursor-pointer transition-all duration-200 hover:bg-transparent-rgba"
               >
                 <td>{index + 1}</td>
                 <td>

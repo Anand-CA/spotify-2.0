@@ -32,21 +32,13 @@ function App() {
   }, [dispatch]);
   console.log("access token >>>", token);
   return (
-    <div className="app">
+    <div style={{ fontFamily: "'Inter', sans-serif" }} className="app">
       <Router>
         <Switch>
-         
           <Route path="/album/:id">
             <div className="flex">
               <Sidebar />
               <Album />
-              <Player />
-            </div>
-          </Route>
-          <Route path="/collection/playlist">
-            <div className="flex">
-              <Sidebar />
-              <Library />
               <Player />
             </div>
           </Route>
