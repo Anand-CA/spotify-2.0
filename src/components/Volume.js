@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
 import { BsVolumeDownFill, BsVolumeUpFill } from "react-icons/bs";
 import { s } from "../instance";
@@ -9,7 +8,6 @@ export default function ContinuousSlider() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(value);
 
   useEffect(() => {
     s.setVolume(value);

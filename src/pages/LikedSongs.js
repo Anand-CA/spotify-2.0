@@ -8,7 +8,6 @@ import { BsThreeDots } from "react-icons/bs";
 import { s } from "../instance";
 function LikedSongs() {
   const [liked, setLiked] = useState([]);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     s.getMySavedTracks((err, data) => {
@@ -75,7 +74,7 @@ function LikedSongs() {
               Liked songs
             </motion.h1>
             <p className="text-sm font-semibold">
-              {user?.display_name}{" "}
+             
               <span className="text-gray-400 ml-3">{liked?.length} songs</span>{" "}
             </p>
           </div>

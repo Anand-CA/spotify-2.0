@@ -1,13 +1,11 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { IoMdArrowDropdown, IoMdPerson } from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
 import { selectUser } from "../features/userSlice";
-import { Dropdown } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
 
 function Header({ show }) {
   const history = useHistory();

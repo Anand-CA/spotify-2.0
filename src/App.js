@@ -11,7 +11,6 @@ import LikedSongs from "./pages/LikedSongs";
 import Album from "./pages/Album";
 import Player from "./components/Player";
 import Search from "./pages/Search";
-import Library from "./pages/Library";
 import { s } from "./instance";
 import { set_user } from "./features/userSlice";
 

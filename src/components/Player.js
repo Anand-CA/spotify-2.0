@@ -1,14 +1,12 @@
 import { motion } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  AiFillHeart,
+  
   AiFillPauseCircle,
   AiFillPlayCircle,
   AiOutlineFullscreen,
-  AiOutlineFullscreenExit,
-  AiOutlineHeart,
+  
 } from "react-icons/ai";
-import { BsVolumeUpFill } from "react-icons/bs";
 import {
   MdDevices,
   MdQueueMusic,
@@ -18,9 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrentPlayTrack,
-  selectPlaying,
   setCurrentTrack,
-  setPlaying,
 } from "../features/songSlice";
 import { s } from "../instance";
 import Slider from "./Slider";
@@ -28,12 +24,7 @@ import Volume from "./Volume";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import Details from "./Details";
 
-const variants = {
-  begin: { scale: 3 },
-  end: { scale: 1 },
-};
 function Player({ token }) {
-  const handle = useFullScreenHandle();
   const [artistImg, setArtistImg] = useState("");
   const [fullscreen, setFullscreen] = useState(false);
   const dispatch = useDispatch();

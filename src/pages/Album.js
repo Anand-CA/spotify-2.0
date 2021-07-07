@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { BsFillPlayFill } from "react-icons/bs";
 import { BsThreeDots } from "react-icons/bs";
 import { motion } from "framer-motion";
@@ -8,7 +8,6 @@ import { s } from "../instance";
 
 function Album() {
   const { id } = useParams();
-  const scroll = useRef(null);
   const ref = useRef(null);
   const [show, setShow] = useState(false);
   const [img, setImg] = useState(null);
@@ -31,7 +30,6 @@ function Album() {
       setShow(false);
     }
   };
-  console.log("album", album);
   function millisToMinutesAndSeconds(millis) {
     var minutes = Math.floor(millis / 60000);
     var seconds = ((millis % 60000) / 1000).toFixed(0);
@@ -41,7 +39,6 @@ function Album() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      ref={scroll}
       ref={ref}
       onScroll={handleScroll}
       style={{ height: "100vh" }}
@@ -53,7 +50,9 @@ function Album() {
       <div className="-mt-20 h-96 w-full bg-gradient-to-b relative from-red-500 ">
         <div className="flex absolute bottom-10 left-10">
           <img className="h-32 w-32 mr-5 items-end" src={img} alt="" />
-          <h1 className="text-6xl font-sans text-white font-bold "></h1>
+          <h1 className="text-6xl font-sans text-white font-bold ">
+            {album?.name}
+          </h1>
         </div>
       </div>
 

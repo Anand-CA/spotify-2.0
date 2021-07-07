@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { MdNavigateBefore, MdNavigateNext, MdPerson } from "react-icons/md";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
-import "antd/dist/antd.css";
-import { Menu, Dropdown } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 import { s } from "../instance";
 import { Link } from "react-router-dom";
 import { selectSearchTerm, setSearchTerm } from "../features/songSlice";
@@ -17,7 +14,6 @@ function Search() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const [result, setResult] = useState({});
-  console.log("result >>>", result);
   useEffect(() => {
     s.search(
       searchTerm,
@@ -27,18 +23,6 @@ function Search() {
       }
     );
   }, [searchTerm]);
-  const menu = (
-    <Menu>
-      <Menu.Item key="0">
-        <a href="https://www.antgroup.com">1st menu item</a>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <a href="https://www.aliyun.com">2nd menu item</a>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="3">3rd menu item</Menu.Item>
-    </Menu>
-  );
   const history = useHistory();
 
   function millisToMinutesAndSeconds(millis) {

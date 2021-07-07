@@ -4,7 +4,6 @@ import {
   AiOutlineSearch,
   AiFillHeart,
   AiOutlineHome,
-  AiFillHome,
 } from "react-icons/ai";
 import Spotify from "spotify-web-api-js";
 import { Link, NavLink } from "react-router-dom";

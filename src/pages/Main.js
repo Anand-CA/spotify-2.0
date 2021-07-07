@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BsFillPlayFill } from "react-icons/bs";
 import { BsThreeDots } from "react-icons/bs";
 import "semantic-ui-css/semantic.min.css";
 import moment from "moment";
@@ -37,7 +36,6 @@ function Main() {
 
     return unsubscribe;
   }, [id]);
-  console.log(playlistId);
   const handleScroll = () => {
     if (Ref.current.scrollTop > 240) {
       setShow(true);
