@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Slider from "@material-ui/core/Slider";
 import { BsVolumeDownFill, BsVolumeUpFill } from "react-icons/bs";
 import { s } from "../instance";
+import styled from "styled-components";
 
 export default function ContinuousSlider() {
   const [value, setValue] = useState(80);
@@ -13,8 +14,8 @@ export default function ContinuousSlider() {
     s.setVolume(value);
   }, [value]);
   return (
-    <div className="hidden w-48 space-x-2 items-center sm:flex justify-center">
-      <BsVolumeDownFill className="text-5xl" />
+    <Container>
+      <BsVolumeDownFill style={{ fontSize: "30px" }} />
 
       <Slider
         style={{ color: "#1DB954" }}
@@ -23,7 +24,19 @@ export default function ContinuousSlider() {
         aria-labelledby="continuous-slider"
       />
 
-      <BsVolumeUpFill className="text-5xl" />
-    </div>
+      <BsVolumeUpFill style={{ fontSize: "30px" }} />
+    </Container>
   );
 }
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+  @media (max-width: 600px) {
+    display: none;
+  }
+  .icon {
+    font-size: 50px;
+  }
+`;

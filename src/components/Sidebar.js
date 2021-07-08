@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { VscLibrary } from "react-icons/vsc";
-import {
-  AiOutlineSearch,
-  AiFillHeart,
-  AiOutlineHome,
-} from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineHome } from "react-icons/ai";
 import Spotify from "spotify-web-api-js";
 import { Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import styled from "styled-components";
 
 var s = new Spotify();
 function Sidebar() {
@@ -23,51 +20,41 @@ function Sidebar() {
     );
   }, []);
   return (
-    <div className="container1 hidden sm:block bg-black h-screen w-56 font-sans font-semibold">
+    <Container>
       {/* logo */}
-      <div className="p-3">
+      <Logo>
         <Link to="/">
           <motion.img
             initial={{ y: -15 }}
             animate={{ y: 1 }}
             transition={{ duration: 0.5 }}
-            className="h-12"
+            className="sidebar__logo"
             src="/images/Spotify_Logo_RGB_White.svg"
             alt=""
           />
         </Link>
-      </div>
+      </Logo>
 
       {/* menu */}
-      <div className="">
-        <NavLink
-          exact
-          className="text-gray-400 hover:text-white"
-          activeClassName="text-spotify-green bg-spotify-black"
-          to="/"
-        >
+      <Menu>
+        <NavLink exact activeClassName="active" to="/">
           <motion.div
             initial={{ y: 15 }}
             animate={{ y: 1 }}
-            className=" flex  py-3 px-3 items-center cursor-pointer"
+            className="sidebar__menu flex  py-3 px-3 items-center cursor-pointer"
           >
-            <AiOutlineHome className=" mr-3  text-3xl" />
+            <AiOutlineHome className="sidebarMenu__icon mr-3  text-3xl" />
             <p className="">Home</p>
           </motion.div>
         </NavLink>
 
-        <NavLink
-          exact
-          className="text-gray-400 hover:text-white"
-          activeClassName="text-spotify-green "
-          to="/search"
-        >
+        <NavLink exact activeClassName="active" to="/search">
           <motion.div
             initial={{ y: 15 }}
             animate={{ y: 1 }}
-            className=" cursor-pointer  py-3 px-3 flex items-center"
+            className="sidebar__menu cursor-pointer  py-3 px-3 flex items-center"
           >
-            <AiOutlineSearch className=" mr-3  text-3xl" />
+            <AiOutlineSearch className="sidebarMenu__icon mr-3  text-3xl" />
             <p className="">Search</p>
           </motion.div>
         </NavLink>
@@ -75,37 +62,92 @@ function Sidebar() {
         <motion.div
           initial={{ y: 15 }}
           animate={{ y: 1 }}
-          className=" cursor-pointer  flex  py-3 px-3 items-center"
+          className="sidebar__menu cursor-pointer  flex  py-3 px-3 items-center"
         >
-          <VscLibrary className="text-gray-400 mr-3   text-3xl" />
+          <VscLibrary className="sidebarMenu__icon text-gray-400 mr-3   text-3xl" />
           <p className="text-gray-400">Library</p>
         </motion.div>
-      </div>
+      </Menu>
 
       {/* liked songs */}
-      <div className="px-3">
-        <Link to="/collection/tracks">
-          <div className="mt-5 py-3 border-b-2 border-gray-600  flex">
-            {/* icon */}
-            <div className="w-7 mr-3 h-7 flex items-center justify-center bg-gradient-to-tl from-blue-600 to-white">
-              <AiFillHeart className="text-white text-lg" />
-            </div>
-            <p className="text-gray-400 ">Liked songs</p>
-          </div>
-        </Link>
-      </div>
-
-      <div className="p-3">
+      <Link to="/collection/tracks">
+        <LikedSongs>
+          <img src="/images/liked.jpeg" alt="" />
+          <p className="text-gray-400 ">Liked songs</p>
+        </LikedSongs>
+      </Link>
+      {/* playlist */}
+      <Playlist>
         {playlists.map((playlist) => (
-          <div key={playlist?.id} className="py-2">
+          <Wrap key={playlist?.id} className="playlist py-2">
             <Link to={`/playlist/${playlist.id}`}>
               <p className="text-gray-400">{playlist.name}</p>
             </Link>
-          </div>
+          </Wrap>
         ))}
-      </div>
-    </div>
+      </Playlist>
+    </Container>
   );
 }
 
 export default Sidebar;
+
+const Container = styled.div`
+  background-color: #121212;
+  color: #fff;
+  height: 100vh;
+  width: 25vh;
+  @media (max-width: 600px) {
+    display: none;
+  }
+  a {
+    text-decoration: none;
+  }
+`;
+
+const Logo = styled.div`
+  img {
+    height: 60px;
+  }
+`;
+const Menu = styled.div`
+  .sidebarMenu__icon {
+    margin-right: 10px;
+    font-size: 25px;
+  }
+  .active {
+    color: #1db954;
+  }
+  a {
+    text-decoration: none;
+    color: lightgrey;
+  }
+  .sidebar__menu {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: 17px;
+  }
+`;
+
+const LikedSongs = styled.div`
+  display: flex;
+  padding: 30px 10px;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  img {
+    height: 45px;
+    margin-right: 10px;
+  }
+  p {
+    color: lightgrey;
+  }
+`;
+const Playlist = styled.div``;
+const Wrap = styled.div`
+  padding: 10px;
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+`;

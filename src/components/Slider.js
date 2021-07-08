@@ -3,6 +3,7 @@ import Slider from "@material-ui/core/Slider";
 import { s } from "../instance";
 import { selectCurrentPlayTrack } from "../features/songSlice";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
 
 const Seeker = () => {
   const currentPlayTrack = useSelector(selectCurrentPlayTrack);
@@ -28,15 +29,19 @@ const Seeker = () => {
   };
 
   return (
-    <div className="w-full px-2">
+    <Container>
       <Slider
         style={{ color: "#1DB954" }}
         value={value}
         onChangeCommitted={handleChange}
         aria-labelledby="continuous-slider"
       />
-    </div>
+    </Container>
   );
 };
 
 export default Seeker;
+
+const Container = styled.div`
+  width: 100%;
+`;

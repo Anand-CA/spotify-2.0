@@ -35,7 +35,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/album/:id">
-            <div className="flex">
+            <div className="container">
               <Sidebar />
               <Album />
               <Player />
@@ -43,29 +43,29 @@ function App() {
           </Route>
 
           <Route path="/collection/tracks">
-            <div className="flex">
+            <div className="container">
               <Sidebar />
               <LikedSongs />
               <Player />
             </div>
           </Route>
           <Route path="/playlist/:id">
-            <div className="flex w-full ">
+            <div className="container">
               <Sidebar />
               <Main />
               <Player />
             </div>
           </Route>
           <Route path="/search">
-            <div className="flex">
+            <div className="container">
               <Sidebar />
               <Search />
-              <Player token={token} />
+              <Player />
             </div>
           </Route>
           <Route exact path="/">
             {token ? (
-              <div className="flex">
+              <div className="container">
                 <Sidebar />
                 <Home />
                 <Player token={token} />

@@ -1,11 +1,9 @@
 import { motion } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  
   AiFillPauseCircle,
   AiFillPlayCircle,
   AiOutlineFullscreen,
-  
 } from "react-icons/ai";
 import {
   MdDevices,
@@ -14,15 +12,13 @@ import {
   MdSkipPrevious,
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectCurrentPlayTrack,
-  setCurrentTrack,
-} from "../features/songSlice";
+import { selectCurrentPlayTrack, setCurrentTrack } from "../features/songSlice";
 import { s } from "../instance";
 import Slider from "./Slider";
 import Volume from "./Volume";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import Details from "./Details";
+import styled from "styled-components";
 
 function Player({ token }) {
   const [artistImg, setArtistImg] = useState("");
@@ -31,6 +27,7 @@ function Player({ token }) {
   const [artistId, setArtistId] = useState("");
   const currentPlayTrack = useSelector(selectCurrentPlayTrack);
   const [track, setTrack] = useState({});
+  const [disabled, setDisabled] = useState(true);
   const handlePlay = () => {
     if (currentPlayTrack.paused) {
       s.play();
@@ -38,7 +35,7 @@ function Player({ token }) {
       s.pause();
     }
   };
-
+  console.log(fullscreen);
   useEffect(() => {
     window.onSpotifyWebPlaybackSDKReady = () => {
       const _token = token;
@@ -91,6 +88,7 @@ function Player({ token }) {
         })
           .then((res) => {
             console.log(res);
+            setDisabled(false);
           })
           .catch((err) => {
             console.log(err);
@@ -105,7 +103,7 @@ function Player({ token }) {
       // Connect to the player!
       player.connect();
     };
-  }, []);
+  }, [dispatch, token]);
   console.log("artist id >>>", artistId);
   console.log("image >>>>>>>>", artistImg);
   const screen1 = useFullScreenHandle();
@@ -127,77 +125,157 @@ function Player({ token }) {
     [screen1]
   );
   return (
-    <div className="bg-spotify-black items-center flex p-5 text-white fixed left-0 right-0 bottom-0">
-      <div className="flex flex-1 space-x-2 items-center">
-        <div>
-          <img
-            className="h-14 sm:h-20 object-contain "
-            src={track?.album?.images[0]?.url}
-            alt=""
-          />
+    <>
+      {/* left */}
+      {disabled ? (
+        <div className="note">
+          <h2>Buy premium for player controls</h2>
+          <p>More features availble on desktop version...</p>
         </div>
+      ) : (
+        <Container style={{ width: "100%" }}>
+          <div className="left">
+            <img
+              className="h-14 sm:h-20 object-contain "
+              src={track?.album?.images[0]?.url}
+              alt=""
+            />
 
-        <div className="flex flex-col justify-center">
-          <p className="mb-1 sm:text-base text-sm">{track?.name}</p>
-          <p className="text-xs sm:text-base text-gray-400 flex space-x-2">
-            {track?.artists
-              ?.map((a) => {
-                return a.name;
-              })
-              .join(",")}
-          </p>
-        </div>
-      </div>
+            <div className="flex flex-col justify-center">
+              <p className="mb-1 sm:text-base text-sm">{track?.name}</p>
+              <span className="text-xs sm:text-base text-gray-400 flex space-x-2">
+                {track?.artists
+                  ?.map((a) => {
+                    return a.name;
+                  })
+                  .join(",")}
+              </span>
+            </div>
+          </div>
 
-      <div className="flex flex-1 flex-col items-center space-y-1">
-        <div className="item-center flex space-x-4">
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={() => s.skipToPrevious()}
-          >
-            <MdSkipPrevious className="text-4xl text-gray-400" />
-          </motion.button>
-          <motion.button whileTap={{ scale: 0.9 }} onClick={handlePlay}>
-            {!currentPlayTrack.paused ? (
-              <AiFillPauseCircle className="text-5xl  text-white" />
-            ) : (
-              <AiFillPlayCircle className="text-5xl text-white" />
-            )}
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={() => s.skipToNext()}
-          >
-            <MdSkipNext className="text-4xl text-gray-400" />
-          </motion.button>
-        </div>
+          {/* middle */}
+          <div className="middle">
+            <div className="middle__top item-center flex space-x-4">
+              <motion.div
+                whileTap={{ scale: 0.9 }}
+                onClick={() => s.skipToPrevious()}
+              >
+                <MdSkipPrevious className="icon text-4xl text-gray-400" />
+              </motion.div>
+              <motion.div whileTap={{ scale: 0.9 }} onClick={handlePlay}>
+                {!currentPlayTrack.paused ? (
+                  <AiFillPauseCircle style={{ fontSize: "50px" }} />
+                ) : (
+                  <AiFillPlayCircle style={{ fontSize: "50px" }} />
+                )}
+              </motion.div>
+              <motion.div
+                whileTap={{ scale: 0.9 }}
+                onClick={() => s.skipToNext()}
+              >
+                <MdSkipNext className="icon text-4xl text-gray-400" />
+              </motion.div>
+            </div>
 
-        <Slider />
-      </div>
+            <Slider />
+          </div>
 
-      {/* right */}
-      <div className="flex items-center justify-end flex-1 space-x-3">
-        <MdQueueMusic className="text-3xl text-gray-400" />
-        <MdDevices className="text-3xl text-gray-400" />
-        <Volume className="" />
-        <button onClick={screen1.enter}>
-          <AiOutlineFullscreen className="text-3xl text-gray-400" />
-        </button>
-      </div>
+          {/* right */}
+          <div className="right">
+            <MdQueueMusic className="icon " />
+            <MdDevices className="icon " />
+            <Volume />
+            <div onClick={screen1.enter}>
+              <AiOutlineFullscreen className="icon" />
+            </div>
+          </div>
+        </Container>
+      )}
 
-      <FullScreen
-        className={`${fullscreen ? "block" : "hidden"}`}
-        handle={screen1}
-        onChange={reportChange}
-      >
+      <FullScreen handle={screen1} onChange={reportChange}>
         <Details
+          visible={fullscreen}
           artistImg={artistImg}
           img={track?.album?.images[0]?.url}
           title={track?.name}
         />
       </FullScreen>
-    </div>
+    </>
   );
 }
 
 export default Player;
+
+const Container = styled.div`
+  background-color: #191414;
+  position: fixed;
+  bottom: 0;
+  padding: 10px;
+  display: flex;
+  right: 0;
+  color: #fff;
+  left: 0;
+  .note {
+    h2 {
+      font-size: 14px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+  align-items: center;
+  .left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    img {
+      height: 70px;
+      object-fit: contain;
+      margin-right: 10px;
+      @media (max-width: 600px) {
+        height: 50px;
+      }
+    }
+    p {
+      font-weight: 800;
+      @media (max-width: 600px) {
+        font-size: 12px;
+      }
+    }
+    span {
+      color: grey;
+      font-size: 14px;
+      @media (max-width: 600px) {
+        font-size: 12px;
+      }
+    }
+  }
+  .middle {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .middle__top {
+      display: flex;
+      align-items: center;
+      .icon {
+        font-size: 30px;
+        margin: 0 5px;
+        @media (max-width: 600px) {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  .right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    .icon {
+      margin: 5px;
+      font-size: 24px;
+      color: grey;
+    }
+    justify-content: flex-end;
+  }
+`;

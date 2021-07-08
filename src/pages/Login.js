@@ -1,22 +1,36 @@
 import React from "react";
 import { login_url } from "../spotify";
+import styled from "styled-components";
 
 function Login() {
   return (
-    <div className="bg-spotify-black h-screen flex items-center px-3 flex-col justify-evenly">
-      <img
-        className="h-52"
-        src="https://cdn.worldvectorlogo.com/logos/spotify-1.svg"
-        alt=""
-      />
-      <a
-        href={login_url}
-        className="no-underline hover:text-white bg-spotify-green focus:ring-4 ring-green-400 py-4 px-10 font-semibold rounded-full text-white"
-      >
-        Login
-      </a>
-    </div>
+    <Container>
+      <img src="https://cdn.worldvectorlogo.com/logos/spotify-1.svg" alt="" />
+      <a href={login_url}>Login</a>
+    </Container>
   );
 }
 
 export default Login;
+
+const Container = styled.div`
+  height: 100vh;
+  background-color: #191919;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  img {
+    height: 150px;
+    @media (max-width: 600px) {
+      height: 85px;
+    }
+  }
+  a {
+    background-color: #1db954;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 99px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+`;

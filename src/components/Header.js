@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
@@ -6,53 +5,68 @@ import { useSelector } from "react-redux";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
 import { selectUser } from "../features/userSlice";
+import styled from "styled-components";
 
 function Header({ show }) {
   const history = useHistory();
   const user = useSelector(selectUser);
   return (
-    <div
-      className={`transition-all duration-300 flex items-center py-2 sticky right-0 ${
-        show ? "bg-black" : "bg-transparent"
-      } top-0 z-10 w-full`}
+    <Container
+      style={{ backgroundColor: `${show ? "#121212" : "transparent"}` }}
     >
       {/* icons */}
-      <div className={`flex ${!show && "flex-1"}`}>
+      <Icons>
         <MdNavigateBefore
           onClick={() => history.goBack()}
-          className="m-2 text-white rounded-full bg-transparent-rgba text-4xl"
+          className="header__icon "
         />
         <MdNavigateNext
           onClick={() => history.goForward()}
-          className="m-2 text-white rounded-full bg-transparent-rgba text-4xl"
+          className="header__icon "
         />
-      </div>
+      </Icons>
 
-      <motion.div
-        className={`animate-fade-in-down duration-300 ${
-          show ? "block" : "hidden"
-        }  flex-1 ml-2`}
-      >
-        <img
-          className="h-6 sm:h-10"
-          src="https://cdn.worldvectorlogo.com/logos/spotify-2.svg"
-          alt=""
-        />
-      </motion.div>
-
-      <div className="flex text-white">
-        <div className="flex space-x-1 items-center">
-          <div>
-            <IoPersonCircleOutline className="text-3xl" />
-          </div>
-          <p className="mt-3 font-semibold">{user?.display_name}</p>
-          <div>
-            <IoMdArrowDropdown className="text-3xl" />
-          </div>
+      <UserInfo>
+        <div>
+          <IoPersonCircleOutline className="header__icon " />
         </div>
-      </div>
-    </div>
+        <div>
+          <p className="mt-3 font-semibold">{user?.display_name}</p>
+        </div>
+
+        <div>
+          <IoMdArrowDropdown className="header__icon " />
+        </div>
+      </UserInfo>
+    </Container>
   );
 }
 
 export default Header;
+
+const Container = styled.div`
+  position: sticky;
+  top: 0;
+  color: #fff;
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -55px;
+  z-index: 10;
+  transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
+  .header__icon {
+    font-size: 30px;
+  }
+`;
+const Icons = styled.div``;
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  * {
+    margin: 0 2px;
+  }
+  p {
+    margin-bottom: 5px;
+  }
+`;

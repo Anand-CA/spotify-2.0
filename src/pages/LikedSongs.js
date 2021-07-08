@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { motion } from "framer-motion";
-import { IoMdPerson } from "react-icons/io";
-import moment from "moment";
-import { BsFillPlayFill } from "react-icons/bs";
 import { BsThreeDots } from "react-icons/bs";
 import { s } from "../instance";
+import Header from "../components/Header";
+import styled from "styled-components";
+import { AiFillPlayCircle } from "react-icons/ai";
+
 function LikedSongs() {
   const [liked, setLiked] = useState([]);
-
   useEffect(() => {
     s.getMySavedTracks((err, data) => {
       setLiked(data?.items);
@@ -21,87 +20,64 @@ function LikedSongs() {
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
   return (
-    <div className="pb-32 main flex-1 h-screen overflow-scroll  bg-spotify-black ">
-      {/* header */}
-      <div
-        className={`-mb-20  flex items-center py-2 sticky right-0 bg-transparent top-0 z-10 w-full`}
-      >
-        {/* icons */}
-        <div className="flex flex-1">
-          <MdNavigateBefore className="m-2 text-white rounded-full bg-transparent-rgba text-4xl" />
-          <MdNavigateNext className="m-2 text-white rounded-full bg-transparent-rgba text-4xl" />
-        </div>
-
-        <div className="flex">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="mr-3 bg-transparent-rgba py-2 px-7 border border-gray-200 rounded-full "
-          >
-            <p className="text-gray-200 ">UPGRADE</p>
-          </motion.button>
-
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-transparent-rgba items-center space-x-2 flex py-2 px-7 border border-gray-200 rounded-full "
-          >
-            <IoMdPerson className="text-3xl text-white bg-gray-800  rounded-full" />
-            <p className="text-gray-200 ">UPGRADE</p>
-          </motion.button>
-        </div>
-      </div>
+    <Container>
+      <Header />
       {/* banner */}
-      <div className="h-96 w-full bg-gradient-to-b relative from-indigo-600 ">
-        <div className="items-center flex absolute bottom-10 left-10">
-          <img
-            className="h-32 w-32 mr-5 items-end"
-            src="/images/liked.jpeg"
-            alt=""
-          />
-          <div className="flex flex-col justify-center text-white">
-            <p className="text-sm font-semibold">PLAYLIST</p>
-            <motion.h1
-              initial={{ y: 20 }}
-              animate={{ y: -3 }}
-              transition={{ ease: "easeInOut", duration: 0.7 }}
-              className="text-6xl font-sans text-white font-bold "
-            >
-              Liked songs
-            </motion.h1>
-            <p className="text-sm font-semibold">
-             
-              <span className="text-gray-400 ml-3">{liked?.length} songs</span>{" "}
-            </p>
-          </div>
+      <Banner>
+        <motion.img
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 1 }}
+          transition={{ ease: "easeInOut", duration: 0.4 }}
+          src="/images/liked.jpeg"
+          alt=""
+        />
+        <div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: -3 }}
+            transition={{ ease: "easeInOut", duration: 0.5 }}
+            className="text-sm font-semibold"
+          >
+            PLAYLIST
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: -3 }}
+            transition={{ ease: "easeInOut", duration: 0.6 }}
+            className="text-6xl font-sans text-white font-bold "
+          >
+            Liked songs
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: -3 }}
+            transition={{ ease: "easeInOut", duration: 0.7 }}
+            className="text-sm font-semibold"
+          >
+            <span className="text-gray-400 ml-3">{liked?.length} songs</span>{" "}
+          </motion.p>
         </div>
-      </div>
-
+      </Banner>
       {/* play button */}
-      <div className="flex items-center pl-6 ">
+      <Controls>
         <motion.div
           className="mr-5 flex justify-center rounded-full  bg-spotify-green w-20 h-20 items-center"
           whileTap={{ scale: 0.9 }}
         >
-          <BsFillPlayFill className="text-white text-5xl " />
+          <AiFillPlayCircle className="icon text-white text-5xl " />
         </motion.div>
 
         <BsThreeDots className="hover:text-white text-gray-500 text-5xl" />
-      </div>
+      </Controls>
 
       {/* table */}
-      <div className="p-2 sm:p-5 ">
-        <table className="w-full text-white ">
+      <div className="table__container">
+        <table>
           <thead>
             <tr>
               <th>#</th>
               <th>TITLE</th>
               <th className="sm:block hidden">ALBUM</th>
-              <th className="">DATE ADDED</th>
               <th>DURATION</th>
             </tr>
           </thead>
@@ -116,11 +92,11 @@ function LikedSongs() {
                 initial={{ scale: 0.6 }}
                 animate={{ scale: 1 }}
                 transition={{ ease: "easeInOut", duration: 0.1 }}
-                className="cursor-pointer transition-all duration-200 hover:bg-transparent-rgba"
+                className="wrap cursor-pointer transition-all duration-200 hover:bg-transparent-rgba"
               >
                 <td>{index + 1}</td>
                 <td>
-                  <div className="flex">
+                  <div className="wrap__title flex">
                     <img
                       className="h-14 mr-4"
                       src={l.track.album.images[0].url}
@@ -128,20 +104,104 @@ function LikedSongs() {
                     />
                     <div className="flex justify-center flex-col">
                       <p className="mb-1">{l.track.name}</p>
-                      <p className="text-gray-400">{l.track.artists[0].name}</p>
+                      <span className="text-gray-400">
+                        {l.track.artists[0].name}
+                      </span>
                     </div>
                   </div>
                 </td>
                 <td className="sm:block hidden">{l.track.album.name}</td>
-                <td className="">{moment().startOf(l.added_at).fromNow()}</td>
                 <td>{millisToMinutesAndSeconds(l.track.duration_ms)}</td>
               </motion.tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
+    </Container>
   );
 }
 
 export default LikedSongs;
+
+const Container = styled.div`
+  flex: 1;
+  height: 100vh;
+  overflow-y: scroll;
+  color: #fff;
+  padding-bottom: 100px;
+  background-color: #191919;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .table__container {
+    padding: 10px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        @media (max-width: 600px) {
+          padding: 10px 3px;
+        }
+      }
+      @media (max-width: 600px) {
+        th {
+          font-size: 10px;
+        }
+        td {
+          font-size: 13px;
+        }
+      }
+      .wrap {
+        cursor: pointer;
+        transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.8);
+        }
+        img {
+          height: 50px;
+          margin-right: 10px;
+        }
+        .wrap__title {
+          display: flex;
+          align-items: center;
+          p {
+            font-weight: bold;
+          }
+          span {
+            font-size: 14px;
+            color: gray;
+          }
+        }
+      }
+    }
+  }
+`;
+const Banner = styled.div`
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  height: 40vh;
+  @media (max-width: 600px) {
+    height: 35vh;
+  }
+  img {
+    height: 150px;
+    margin-right: 10px;
+  }
+  h1 {
+    font-size: 50px;
+  }
+  background-image: linear-gradient(rgb(79, 70, 229), #191919);
+`;
+const Controls = styled.div`
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  .icon {
+    font-size: 60px;
+    color: #1db954;
+  }
+`;

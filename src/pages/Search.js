@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { selectUser } from "../features/userSlice";
+import styled from "styled-components";
+
 function Search() {
   const searchTerm = useSelector(selectSearchTerm);
   const dispatch = useDispatch();
@@ -31,24 +33,23 @@ function Search() {
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
   return (
-    <div className="pb-32 sm:px-2 bg-spotify-black flex-1 h-screen overflow-y-scroll">
-      {/* header */}
-      <div className="py-2 sticky top-0 bg-spotify-black flex items-center">
+    <Container>
+      <Header>
         {/* nav arrow */}
-        <div className="flex">
+        <div className="nav__arrow">
           <MdNavigateBefore
             onClick={() => history.goBack()}
-            className="m-2 text-white rounded-full bg-transparent-rgba text-4xl"
+            className="m-2 icon text-white rounded-full bg-transparent-rgba text-4xl"
           />
           <MdNavigateNext
             onClick={() => history.goForward()}
-            className="m-2 text-white rounded-full bg-transparent-rgba text-4xl"
+            className="m-2 icon text-white rounded-full bg-transparent-rgba text-4xl"
           />
         </div>
 
         {/* search bar */}
-        <div className="bg-white mr-3 max-w-sm w-full flex items-center rounded-full px-3 overflow-hidden">
-          <BsSearch className=" text-black text-2xl" />
+        <div className="search__bar">
+          <BsSearch className="icon text-black text-2xl" />
           <input
             type="text"
             value={searchTerm}
@@ -59,46 +60,39 @@ function Search() {
         </div>
 
         {/* user Info */}
-        <div className="flex text-white ml-auto">
-          <div className="flex space-x-1 items-center">
-            <div>
-              <IoPersonCircleOutline className="text-3xl" />
-            </div>
-            <p className="sm:block hidden mt-3 font-semibold">
-              {user?.display_name}
-            </p>
-            <div className="sm:block hidden">
-              <IoMdArrowDropdown className="text-3xl" />
-            </div>
+        <div className="user__info">
+          <div>
+            <IoPersonCircleOutline className="icon text-3xl" />
+          </div>
+          <p className="sm:block hidden mt-3 font-semibold">
+            {user?.display_name}
+          </p>
+          <div className="sm:block hidden">
+            <IoMdArrowDropdown className="icon text-3xl" />
           </div>
         </div>
-      </div>
+      </Header>
 
       <h1
-        className={`sm:text-3xl ${
-          searchTerm && "hidden"
-        } text-white font-bold p-5`}
+        style={{ display: `${searchTerm ? "none" : "block"}`, padding: "10px" }}
       >
         Search for Tracks, Artists, Albums ...
       </h1>
       {/* body */}
-      <div
-        style={{ display: `${!searchTerm ? "none" : "block"}` }}
-        className={`text-white`}
-      >
+      <div style={{ display: `${!searchTerm ? "none" : "block"}` }}>
         {/* Songs */}
-        <div>
+        <Songs>
           <h1 className="sm:text-4xl text-2xl px-3 font-sans text-white font-bold ">
             Songs
           </h1>
-          <div>
+          <div className="container">
             {result?.tracks?.items?.map((song) => (
               <div
                 whileTap={{ scale: 0.9 }}
                 onClick={() => s.play({ uris: [`spotify:track:${song?.id}`] })}
-                className="cursor-pointer flex justify-between p-3"
+                className="wrap cursor-pointer flex justify-between p-3"
               >
-                <div className="flex">
+                <div className="wrap__title">
                   <img
                     className="h-14 mr-4"
                     src={song.album.images[0].url}
@@ -106,30 +100,30 @@ function Search() {
                   />
                   <div className="flex justify-center flex-col">
                     <p className="mb-1 sm:text-base text-md">{song.name}</p>
-                    <div className="flex text-gray-400 text-xs">
+                    <span>
                       {song?.artists
                         .map(function (a) {
                           return a.name;
                         })
                         .join(",")}
-                    </div>
+                    </span>
                   </div>
                 </div>
                 <p>{millisToMinutesAndSeconds(song.duration_ms)}</p>
               </div>
             ))}
           </div>
-        </div>
+        </Songs>
 
         {/* artist */}
-        <div className="mt-5">
+        <Artists>
           <h1 className="text-2xl sm:text-4xl px-3  font-sans text-white font-bold ">
             Artists
           </h1>
-          <div className="flex overflow-x-scroll w-full">
+          <div className="artists__flex">
             {result?.artists?.items?.map((a) => (
-              <div className="transition-all rounded-lg duration-300 hover:bg-transparent-rgba2 p-3 flex flex-col m-3 space-y-3">
-                <div className="h-52  w-52 rounded-full overflow-hidden">
+              <div className="wrap transition-all rounded-lg duration-300 hover:bg-transparent-rgba2 p-3 flex flex-col m-3 space-y-3">
+                <div className="ImgContainer">
                   <img
                     className="object-cover"
                     src={
@@ -140,48 +134,201 @@ function Search() {
                     alt=""
                   />
                 </div>
-                <h4 className="text-white">{a.name}</h4>
-                <p className="text-gray-400">
+                <p className="text-white">{a.name}</p>
+                <span className="text-gray-400">
                   {a.type.charAt(0).toUpperCase() + a.type.slice(1)}
-                </p>
+                </span>
               </div>
             ))}
           </div>
-        </div>
+        </Artists>
 
         {/* albums */}
-        <div className="overflow-x-scroll mt-5 overflow-y-hidden">
+        <Albums>
           <h1 className="px-5 text-2xl sm:text-4xl font-sans text-white font-bold ">
             Albums
           </h1>
           {/* grid */}
-          <div className="p-5 flex">
+          <div className="albums__flex">
             {result?.albums?.items?.map((a) => (
               <Link to={`/album/${a.id}`}>
-                <div className=" hover:bg-black p-5 ">
-                  <div className="h-44 w-44 ">
-                    <img
-                      className="h-full w-full object-cover"
-                      src={a.images[0].url}
-                      alt=""
-                    />
-                  </div>
+                <div className="wrap hover:bg-black p-5 ">
+                  <img
+                    className="h-full w-full object-cover"
+                    src={a.images[0].url}
+                    alt=""
+                  />
+
                   <p className="mt-3 text-white font-semibold">{a.name}</p>
-                  <div className="text-sm text-gray-400">
+                  <span className="">
                     {a.artists
                       .map((a) => {
                         return a.name;
                       })
                       .join(",")}
-                  </div>
+                  </span>
                 </div>
               </Link>
             ))}
           </div>
-        </div>
+        </Albums>
       </div>
-    </div>
+    </Container>
   );
 }
 
 export default Search;
+
+const Container = styled.div`
+  background-color: #191919;
+  color: #fff;
+  flex: 1;
+  overflow-y: scroll;
+  height: 100vh;
+  padding-bottom: 80px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  .nav__arrow {
+    margin-right: 10px;
+    .icon {
+      font-size: 30px;
+    }
+  }
+  .search__bar {
+    display: flex;
+    background-color: #fff;
+    align-items: center;
+    border-radius: 99px;
+    overflow: hidden;
+    .icon {
+      color: black;
+      margin-left: 10px;
+    }
+    input {
+      padding: 10px 15px;
+      outline: none;
+      border: none;
+    }
+  }
+  .user__info {
+    margin-left: auto;
+    padding: 10px;
+    align-items: center;
+    display: flex;
+    .icon {
+      font-size: 30px;
+    }
+    p {
+      margin: 0 10px 5px 10px;
+    }
+  }
+`;
+
+const Songs = styled.div`
+  h1 {
+    padding: 10px;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    .wrap {
+      display: flex;
+      cursor: pointer;
+      padding: 10px 20px;
+      justify-content: space-between;
+      .wrap__title {
+        display: flex;
+        img {
+          height: 50px;
+          margin-right: 10px;
+        }
+        p {
+          font-weight: bold;
+        }
+        span {
+          font-size: 14px;
+          color: gray;
+        }
+      }
+    }
+  }
+`;
+const Artists = styled.div`
+  margin-top: 20px;
+  h1 {
+    padding: 10px;
+  }
+  .artists__flex {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .wrap {
+      padding: 20px;
+      margin: 10px;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      p {
+        font-weight: 800;
+      }
+      span {
+        color: grey;
+      }
+      .ImgContainer {
+        width: 200px;
+        height: 200px;
+        border-radius: 99px;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+`;
+const Albums = styled.div`
+  margin-top: 20px;
+  h1 {
+    padding: 10px;
+  }
+  .albums__flex {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    a {
+      text-decoration: none;
+    }
+    .wrap {
+      margin: 10px;
+      padding: 20px;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      img {
+        height: 180px;
+      }
+      p {
+        color: #fff;
+        font-weight: bold;
+      }
+      span {
+        color: grey;
+        font-size: 14px;
+      }
+    }
+  }
+`;

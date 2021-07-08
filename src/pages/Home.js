@@ -1,21 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BsFillPlayFill } from "react-icons/bs";
-import { domAnimation, LazyMotion, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import { s } from "../instance";
+import styled from "styled-components";
 
 function Home() {
-  const [newReleases, setNewReleases] = useState([]);
   const ref = useRef(null);
   const [show, setShow] = useState(false);
-
+  const [playlists, setPlaylists] = useState([]);
   useEffect(() => {
-    s.getNewReleases((err, data) => {
-      setNewReleases(data.albums.items);
+    s.getUserPlaylists()
+      .then((data) => {
+        console.log("user playlist ????", data);
+        setPlaylists(data.items);
+      })
+      .catch((err) => {
+        console.log("errr", err);
+      });
+    s.getMyTopArtists((err, data) => {
+      console.log("top artist", data);
     });
   }, []);
-
+  console.log(playlists);
   const handleScroll = () => {
     if (ref.current.scrollTop > 240) {
       setShow(true);
@@ -24,45 +30,72 @@ function Home() {
     }
   };
   return (
-    <div
-      ref={ref}
-      onScroll={handleScroll}
-      className={`px-2 pb-32 overflow-scroll  text-white bg-spotify-black flex-1 h-screen`}
-    >
+    <Container ref={ref} onScroll={handleScroll}>
       <Header show={show} />
-      <h1 className="text-white font-bold tracking-wider px-2">New Releases</h1>
+      <h1 className="home__heading">My playlists</h1>
 
       {/*  */}
-      <div className="grid xl:grid-cols-5 gap-2 sm:gap-5 lg:grid-cols-4 sm:grid-cols-3  grid-cols-2">
-        <LazyMotion features={domAnimation}>
-          {newReleases?.map((n, index) => (
-            <Link key={index} to={`/album/${n.id}`}>
-              <motion.div
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="group duration-300 transition-all p-3 sm:p-6 hover:bg-transparent-rgba"
-              >
-                <div className="rounded-md relative overflow-hidden">
-                  <img className="" src={n.images[0].url} alt="" />
-                  <motion.div
-                    whileTap={{ scale: 0.7 }}
-                    className="mr-5 animate-fade-in-down duration-100 transition-all duration-400 absolute bottom-1 -right-4 hidden group-hover:flex justify-center rounded-full  bg-spotify-green w-12 h-12 items-center"
-                  >
-                    <BsFillPlayFill className="text-white text-3xl " />
-                  </motion.div>
-                </div>
-
-                <p className="text-white line-clamp-2 mt-3 font-semibold">
-                  {n.name}
-                </p>
-                <p className="text-gray-400">{n.artists[0].name}</p>
-              </motion.div>
-            </Link>
-          ))}
-        </LazyMotion>
+      <div className="home__grid ">
+        {playlists?.map((p, index) => (
+          <Link key={index} to={`/playlist/${p.id}`}>
+            <div className="wrap">
+              <img src={p?.images[0]?.url} alt="" />
+              <p>{p.name}</p>
+            </div>
+          </Link>
+        ))}
       </div>
-    </div>
+    </Container>
   );
 }
 
 export default Home;
+
+const Container = styled.div`
+  overflow-y: scroll;
+  height: 100vh;
+  flex: 1;
+  color: #fff;
+  background-color: #191919;
+  padding-bottom: 100px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .home__heading {
+    padding: 60px 10px 0 10px;
+  }
+  .home__grid {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    @media (max-width: 600px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    a {
+      text-decoration: none;
+    }
+    .wrap {
+      padding: 18px;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      img {
+        width: 100%;
+        object-fit: contain;
+      }
+      p {
+        color: #fff;
+        font-weight: 600;
+      }
+      span {
+        font-size: 14px;
+        color: gray;
+      }
+    }
+  }
+`;
