@@ -1,5 +1,11 @@
-##LIVE DEMO 
+## LIVE DEMO 
 https://spotify-4f61c.web.app/
+
+## About this app?
+Full working spotify with player controls. 🔹 Mobile response
+
+## Technologies used
+🔹 React 🔹 Redux 🔹 TailwindCSS 🔹 SpotifyWebApiJs 🔹 StyledComponents
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
