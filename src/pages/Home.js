@@ -8,6 +8,7 @@ function Home() {
   const ref = useRef(null);
   const [show, setShow] = useState(false);
   const [playlists, setPlaylists] = useState([]);
+
   useEffect(() => {
     s.getUserPlaylists()
       .then((data) => {
@@ -32,15 +33,18 @@ function Home() {
   return (
     <Container ref={ref} onScroll={handleScroll}>
       <Header show={show} />
-      <h1 className="home__heading">My playlists</h1>
-
-      {/*  */}
-      <div className="home__grid ">
+      <h1>My playlists</h1>
+      <div className="grid">
         {playlists?.map((p, index) => (
           <Link key={index} to={`/playlist/${p.id}`}>
             <div className="wrap">
               <img src={p?.images[0]?.url} alt="" />
-              <p>{p.name}</p>
+              <h4>{p.name}</h4>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: p.description,
+                }}
+              ></p>{" "}
             </div>
           </Link>
         ))}
@@ -59,14 +63,23 @@ const Container = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  .home__heading {
-    padding: 60px 10px 0 10px;
-  }
-  .home__grid {
-    display: grid;
-    grid-gap: 5px;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
 
+  h1 {
+    padding: 2rem 1.5rem 0.5rem 1.5rem;
+  }
+
+  .grid {
+    padding: 1rem 1.5rem;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+
+    @media (max-width: 1488px) {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    @media (max-width: 1190px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
     @media (max-width: 1024px) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -76,19 +89,30 @@ const Container = styled.div`
 
     a {
       text-decoration: none;
+      color: inherit;
     }
     .wrap {
       padding: 18px;
+      border-radius: 5px;
+      background-color: rgba(1, 1, 1, 0.2);
+      height: 100%;
+
       &:hover {
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: rgba(42, 42, 42, 1);
       }
       img {
-        width: 100%;
-        object-fit: contain;
+        border-radius: 3px;
+        object-fit: cover;
+        margin-bottom: 0.6rem;
+        max-width: 100%;
+      }
+      h4 {
+        color: #fff;
+        margin-bottom: 0.4rem;
       }
       p {
-        color: #fff;
-        font-weight: 600;
+        opacity: 0.6;
+        font-size: 0.8rem;
       }
       span {
         font-size: 14px;

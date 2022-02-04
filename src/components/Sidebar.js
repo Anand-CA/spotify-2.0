@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { VscLibrary } from "react-icons/vsc";
-import { AiOutlineSearch, AiOutlineHome } from "react-icons/ai";
 import Spotify from "spotify-web-api-js";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
