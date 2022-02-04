@@ -1,8 +1,7 @@
 export const client_secret = "718ede135a544ad781004897bf6d0e64";
 export const client_id = "3379b41787bf4903b57dbbf703f48016";
-export const redirect_uri = "https://spotify2-beta.vercel.app";
+export const redirect_uri = "https://spotifyclonereact.vercel.app";
 
-// https://spotify2-beta.vercel.app
 const scopes = [
   "streaming",
   "playlist-modify-public",
