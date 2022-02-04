@@ -13,10 +13,12 @@ import Player from "./components/Player";
 import Search from "./pages/Search";
 import { s } from "./instance";
 import { set_user } from "./features/userSlice";
+import Error404 from "./pages/Error404";
 
 function App() {
   const [token, setToken] = useState(null);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const hash = getAccessToken();
     window.location.hash = "";
@@ -29,54 +31,53 @@ function App() {
       });
     }
   }, [dispatch]);
-  console.log("access token >>>", token);
-  return (
-    <div style={{ fontFamily: "'Inter', sans-serif" }} className="app">
-      <Router>
-        <Switch>
-          <Route path="/album/:id">
-            <div className="container">
-              <Sidebar />
-              <Album />
-              <Player />
-            </div>
-          </Route>
 
-          <Route path="/collection/tracks">
+  return (
+    <Router>
+      <Switch>
+        <Route path="/album/:id">
+          <div className="container">
+            <Sidebar />
+            <Album />
+            <Player />
+          </div>
+        </Route>
+
+        <Route path="/collection/tracks">
+          <div className="container">
+            <Sidebar />
+            <LikedSongs />
+            <Player />
+          </div>
+        </Route>
+        <Route path="/playlist/:id">
+          <div className="container">
+            <Sidebar />
+            <Main />
+            <Player />
+          </div>
+        </Route>
+        <Route path="/search">
+          <div className="container">
+            <Sidebar />
+            <Search />
+            <Player />
+          </div>
+        </Route>
+        <Route exact path="/">
+          {token ? (
             <div className="container">
               <Sidebar />
-              <LikedSongs />
-              <Player />
+              <Home />
+              <Player token={token} />
             </div>
-          </Route>
-          <Route path="/playlist/:id">
-            <div className="container">
-              <Sidebar />
-              <Main />
-              <Player />
-            </div>
-          </Route>
-          <Route path="/search">
-            <div className="container">
-              <Sidebar />
-              <Search />
-              <Player />
-            </div>
-          </Route>
-          <Route exact path="/">
-            {token ? (
-              <div className="container">
-                <Sidebar />
-                <Home />
-                <Player token={token} />
-              </div>
-            ) : (
-              <Login />
-            )}
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+          ) : (
+            <Login />
+          )}
+        </Route>
+        <Route component={Error404} />
+      </Switch>
+    </Router>
   );
 }
 

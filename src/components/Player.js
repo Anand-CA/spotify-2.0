@@ -35,7 +35,7 @@ function Player({ token }) {
       s.pause();
     }
   };
-  console.log(fullscreen);
+
   useEffect(() => {
     window.onSpotifyWebPlaybackSDKReady = () => {
       const _token = token;
@@ -104,8 +104,6 @@ function Player({ token }) {
       player.connect();
     };
   }, [dispatch, token]);
-  console.log("artist id >>>", artistId);
-  console.log("image >>>>>>>>", artistImg);
   const screen1 = useFullScreenHandle();
 
   useEffect(() => {
@@ -124,8 +122,9 @@ function Player({ token }) {
     },
     [screen1]
   );
+
   return (
-    <>
+    <Wrapper>
       {/* left */}
       {disabled ? (
         <div className="note">
@@ -133,7 +132,7 @@ function Player({ token }) {
           <p>More features availble on desktop version...</p>
         </div>
       ) : (
-        <Container style={{ width: "100%" }}>
+        <Container>
           <div className="left">
             <img
               className="h-14 sm:h-20 object-contain "
@@ -200,21 +199,24 @@ function Player({ token }) {
           title={track?.name}
         />
       </FullScreen>
-    </>
+    </Wrapper>
   );
 }
 
 export default Player;
 
-const Container = styled.div`
-  background-color: #191414;
+const Wrapper = styled.div`
+  height: 6rem;
   position: fixed;
   bottom: 0;
-  padding: 10px;
-  display: flex;
-  right: 0;
-  color: #fff;
   left: 0;
+  right: 0;
+  background: #181818;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+`;
+
+const Container = styled.div`
   .note {
     h2 {
       font-size: 14px;

@@ -124,12 +124,10 @@ function LikedSongs() {
 export default LikedSongs;
 
 const Container = styled.div`
-  flex: 1;
-  height: 100vh;
-  overflow-y: scroll;
   color: #fff;
   padding-bottom: 100px;
   background-color: #191919;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -180,21 +178,29 @@ const Container = styled.div`
   }
 `;
 const Banner = styled.div`
-  padding: 10px;
   display: flex;
   align-items: center;
-  height: 40vh;
-  @media (max-width: 600px) {
-    height: 35vh;
-  }
+  gap: 1.5rem;
+  padding: 7rem 2rem;
   img {
     height: 150px;
-    margin-right: 10px;
+    object-fit: contain;
   }
   h1 {
     font-size: 50px;
   }
   background-image: linear-gradient(rgb(79, 70, 229), #191919);
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #191919 100%);
+  }
 `;
 const Controls = styled.div`
   display: flex;

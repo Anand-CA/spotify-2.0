@@ -52,12 +52,10 @@ function Home() {
 export default Home;
 
 const Container = styled.div`
-  overflow-y: scroll;
-  height: 100vh;
-  flex: 1;
   color: #fff;
   background-color: #191919;
   padding-bottom: 100px;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -67,7 +65,7 @@ const Container = styled.div`
   .home__grid {
     display: grid;
     grid-gap: 5px;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
 
     @media (max-width: 1024px) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
